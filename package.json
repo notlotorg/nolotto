@@ -35,5 +35,5 @@
     "vite": "^5.2.0",
     "vite-plugin-eslint": "^1.8.1"
   },
-  "homepage": "cow-firm-twa/"
+  "homepage": "/cow-firm-twa/"
 }
