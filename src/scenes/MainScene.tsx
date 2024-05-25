@@ -1,13 +1,14 @@
 import { Plane as PlaneCmp } from '@react-three/drei'
 import { PlaneBufferGeometryProps } from '@react-three/fiber'
 import React, { useEffect } from 'react'
-import { BufferGeometry, Material, MeshStandardMaterial, Plane, VideoTexture } from 'three'
+import { BufferGeometry, DoubleSide, Material, MeshStandardMaterial, Plane, VideoTexture } from 'three'
 
 export const MainScene = () => {
   const mainScreenRef = React.useRef<any>(null)
 
   const planeMat = new MeshStandardMaterial({
     color: 0x00ff00,
+    side: DoubleSide,
   })
 
   const _requestAudioVideoPermission = async () => {
@@ -41,7 +42,7 @@ export const MainScene = () => {
       // keep ration 16:9
     }
       <PlaneCmp args={[4, 2.25, 1, 1] as PlaneBufferGeometryProps['args']}
-
+        
         position={[0, 0, -1]}
         rotation={[0, 0, 0]}
         material={planeMat}
