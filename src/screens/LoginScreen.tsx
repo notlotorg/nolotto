@@ -1,14 +1,31 @@
 import React from "react";
 import { TonConnectButton } from "@tonconnect/ui-react";
 import { useTranslation } from "react-i18next";
+import { createUseStyles } from "react-jss";
+
+const styles = createUseStyles({
+  mainContainer: {
+    position: "relative",
+    width: "100%",
+    display: "flex",
+    flexFlow: "column nowrap",
+    border: "1px solid red",
+  },
+});
 
 export const LoginScreen = ({ onAutheSuccess }: any) => {
+  const classes = styles();
   const { t } = useTranslation();
   return (
-    <>
+    <div className={classes.mainContainer}>
       {t("app.title")}
       <button onClick={() => onAutheSuccess()}>Click me!</button>
-      <TonConnectButton />
-    </>
+      <TonConnectButton
+        style={{
+          position: "relative",
+          right: 0,
+        }}
+      />
+    </div>
   );
 };
