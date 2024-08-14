@@ -19,9 +19,6 @@ const defLang = navigator.language || navigator.languages[0] || "en";
 const langToUse = defLang.length > 2 ? defLang.slice(0, 2) : defLang;
 
 i18n.use(initReactI18next).init({
-  // the translations
-  // (tip move them in a JSON file and import them,
-  // or even better, manage them via a UI: https://react.i18next.com/guides/multiple-translation-files#manage-your-translations-with-a-management-gui)
   resources: {
     en: {
       translation: enLang,
@@ -37,6 +34,8 @@ i18n.use(initReactI18next).init({
   },
 });
 
+WebApp.isVerticalSwipesEnabled = false;
+WebApp.isClosingConfirmationEnabled = true;
 WebApp.ready();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

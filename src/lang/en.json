@@ -2,5 +2,12 @@
   "app": {
     "title": "Hello World",
     "connect_wallet": "Connect Wallet"
+  },
+  "bottomNav": {
+    "home": "Home",
+    "game": "Game",
+    "tasks": "Tasks",
+    "lotto": "Lotto",
+    "profile": "Profile"
   }
 }
