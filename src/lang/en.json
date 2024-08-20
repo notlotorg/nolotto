@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "Hello World",
-    "connect_wallet": "Connect Wallet"
+    "connect-wallet": "Connect Wallet"
   },
   "bottomNav": {
     "home": "Home",
@@ -9,5 +9,27 @@
     "tasks": "Tasks",
     "lotto": "Lotto",
     "profile": "Profile"
-  }
+  },
+  "times": {
+    "day": "day",
+    "hour": "hour",
+    "minute": "minute",
+    "second": "second"
+  },
+  "win": "win",
+  "balance": "balance",
+  "status": "status",
+  "ticket": "ticket",
+  "amount": "amount",
+  "ticket-amount": "ticket amount",
+  "game-rules": "game rules",
+  "support": "support",
+  "smart-contract": "smart contract",
+  "faq": "FAQ",
+  "cooper": "cooper",
+  "silver": "silver",
+  "gold": "gold",
+  "platinum": "platinum",
+  "diamond": "diamond",
+  "lotto": "lotto"
 }
