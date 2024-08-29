@@ -3,20 +3,20 @@ import { createUseStyles } from "react-jss";
 
 const style = createUseStyles({
   spinner: {
-    animation: "rotate 2s linear infinite",
+    animation: "$rotate 2s linear infinite",
     zIndex: 2,
     // position: "absolute",
     // top: "50%",
     // left: "50%",
     // margin: "-25px 0 0 -25px",
-    width: 50,
-    height: 50,
+    width: 25,
+    height: 25,
+  },
 
-    "& .path": {
-      stroke: "rgb(210, 70, 75)",
-      strokeLinecap: "round",
-      animation: "dash 1.5s ease-in-out infinite",
-    },
+  path: {
+    stroke: "rgb(210, 70, 75)",
+    strokeLinecap: "round",
+    animation: "$dash 1.5s ease-in-out infinite",
   },
 
   "@keyframes rotate": {
@@ -46,7 +46,7 @@ export const Spinner = () => {
   return (
     <svg className={classes.spinner} viewBox="0 0 50 50">
       <circle
-        className={"path"}
+        className={classes.path}
         cx="25"
         cy="25"
         r="20"
