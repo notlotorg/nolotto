@@ -29,7 +29,7 @@ const styles = createUseStyles({
   timeBlockValue: {
     fontWeight: "bold",
     borderRadius: 6,
-    backgroundColor: "#3b3b3b",
+    backgroundColor: "var(--color-light-grey)",
     width: 42,
     height: 42,
     display: "flex",

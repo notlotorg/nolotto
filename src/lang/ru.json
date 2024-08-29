@@ -1,6 +1,39 @@
 {
   "app": {
     "title": "Привет мир",
-    "connect_wallet": "Подключить кошелек"
-  }
+    "connect-wallet": "Подключить кошелек"
+  },
+  "bottomNav": {
+    "home": "Главная",
+    "game": "Игра",
+    "tasks": "Задания",
+    "lotto": "Лото",
+    "profile": "Профиль"
+  },
+  "times": {
+    "day": "день",
+    "hour": "час",
+    "minute": "минута",
+    "second": "секунда"
+  },
+  "win": "выиграть",
+  "balance": "баланс",
+  "status": "статус",
+  "ticket": "билет",
+  "amount": "количество",
+  "ticket-amount": "кол-во билетов",
+  "game-rules": "правила игры",
+  "support": "поддержка",
+  "smart-contract": "смарт контракт",
+  "faq": "FAQ",
+  "cooper": "медь",
+  "silver": "серебро",
+  "gold": "золото",
+  "platinum": "платина",
+  "diamond": "алмаз",
+  "lotto": "лото",
+  "global": "глобальный",
+  "daily": "ежедневный",
+  "friends": "друзья",
+  "tasks": "задания"
 }

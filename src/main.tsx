@@ -8,6 +8,7 @@ import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
 import enLang from "./lang/en.json";
 import ruLang from "./lang/ru.json";
+import esLang from "./lang/es.json";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -25,6 +26,9 @@ i18n.use(initReactI18next).init({
     },
     ru: {
       translation: ruLang,
+    },
+    es: {
+      translation: esLang,
     },
   },
   lng: langToUse,

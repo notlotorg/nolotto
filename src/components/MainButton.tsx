@@ -9,7 +9,7 @@ export const MainButton: React.FC<MainButtonProps> = ({ onClick, title }) => {
   return (
     <div
       style={{
-        background: "#f86c15",
+        background: "var(--color-orange)",
         width: "100%",
         fontWeight: 700,
         textAlign: "center",

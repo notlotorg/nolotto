@@ -18,7 +18,7 @@ const styles = createUseStyles({
     textAlign: "center",
     fontSize: 26,
     fontWeight: "bold",
-    color: "#f86c15",
+    color: "var(--color-orange)",
     marginBottom: 20,
     lineHeight: "24px",
   },
@@ -42,7 +42,8 @@ const styles = createUseStyles({
         fontSize: 20,
       },
       "& span": {
-        color: "#f86c15",
+        color: "var(--color-orange)",
+        fontWeight: "bold",
       },
     },
   },
