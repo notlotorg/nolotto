@@ -4,7 +4,7 @@ import "../App.scss";
 import { MainApp } from "../modules/MainApp";
 import WebApp from "telegram-mini-app";
 import AppRoutes from "../routes/AppRoutes";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 export const AppResolver = () => {
   const [isAuthenticated, setIsAuthenticated] = React.useState(true);
