@@ -8,6 +8,8 @@ import { MainButton } from "../components/MainButton";
 const styles = createUseStyles({
   homePage: {
     paddingTop: 10,
+    maxHeight: "calc(100svh - 180px)",
+    overflowY: "auto",
     "& h1": {
       textTransform: "uppercase",
       textAlign: "center",

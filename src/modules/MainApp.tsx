@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { BottomNavigation } from "../components/BottomNavigation";
 import { createUseStyles } from "react-jss";
 import mainLogo from "../assets/main-logo.png";
@@ -88,6 +88,8 @@ const mainAppStyles = createUseStyles({
 export const MainApp = () => {
   const classes = mainAppStyles();
 
+  const nav = useNavigate();
+
   return (
     <div className={classes.mainAppHolder}>
       <header className={classes.header}>
@@ -101,7 +103,7 @@ export const MainApp = () => {
           <div className={classes.tag}>100,000 TON</div>
         </div>
 
-        <div className={classes.profile}>
+        <div className={classes.profile} onClick={() => nav("/profile")}>
           <img src={profileLogo} alt="profile" />
         </div>
       </header>

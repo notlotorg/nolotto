@@ -60,22 +60,22 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = () => {
 
   const navItems = [
     {
-      id: "home",
+      id: "bottomNav.home",
       link: "/home",
       icon: homeIcon,
     },
     {
-      id: "game",
+      id: "bottomNav.game",
       link: "/game",
       icon: gameIcon,
     },
     {
-      id: "tasks",
+      id: "bottomNav.tasks",
       link: "/tasks",
       icon: tasksIcon,
     },
     {
-      id: "lotto",
+      id: "bottomNav.lotto",
       link: "/lotto",
       icon: lottoIcon,
     },

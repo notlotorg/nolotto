@@ -2,10 +2,13 @@ import React from "react";
 import { ITask } from "../models/ITask";
 import { createUseStyles } from "react-jss";
 import { Spinner } from "./Spinner";
+import CheckIcon from "../assets/svg/check-mark.svg";
+import ExIcon from "../assets/svg/ex-mark.svg";
 
 type TasksListProps = {
   tasks: ITask[];
   title: string;
+  isLoading?: boolean;
   onItemComplete?: (task: ITask) => void;
   onItemClicked?: (task: ITask) => void;
 };
@@ -26,11 +29,14 @@ const styles = createUseStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-start",
+    backgroundColor: "var(--color-grey)",
+    borderRadius: 50,
+    padding: "0 14px 0 0",
     gap: 20,
   },
   icon: {
-    width: 30,
-    height: 30,
+    width: 50,
+    height: 50,
     borderRadius: "50%",
     background: "var(--color-orange)",
     display: "flex",
@@ -40,11 +46,10 @@ const styles = createUseStyles({
   meta: {
     display: "flex",
     flexDirection: "column",
-    gap: 4,
   },
   title: {
     fontSize: 16,
-    fontWeight: 700,
+    fontWeight: 500,
   },
   description: {
     fontSize: 14,
@@ -55,24 +60,32 @@ const styles = createUseStyles({
     color: "var(--color-orange)",
   },
   completeIndicator: {
-    width: 20,
-    height: 20,
+    width: 24,
+    height: 24,
     borderRadius: "50%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    justifySelf: "flex-end",
-    border: "2px solid #000",
+    marginLeft: "auto",
+    // border: "2px solid #000",
+    "& svg": {
+      width: "100%",
+      height: "100%",
+    },
   },
 });
 
-export const TasksList: React.FC<TasksListProps> = ({ tasks, title }) => {
+export const TasksList: React.FC<TasksListProps> = ({
+  tasks,
+  title,
+  isLoading,
+}) => {
   const classes = styles();
 
   return (
     <>
       <div className={classes.listTitle}>{title}</div>
-      <Spinner />
+      {isLoading && <Spinner />}
       <ul className={classes.list}>
         {tasks.map((task) => (
           <li key={task.id} className={classes.item}>
@@ -81,7 +94,9 @@ export const TasksList: React.FC<TasksListProps> = ({ tasks, title }) => {
               <div className={classes.title}>{task.title}</div>
               <div className={classes.prize}>{task.prize} LOT</div>
             </div>
-            <div className={classes.completeIndicator}>X</div>
+            <div className={classes.completeIndicator}>
+              {task.completed ? <CheckIcon /> : <ExIcon />}
+            </div>
           </li>
         ))}
       </ul>
