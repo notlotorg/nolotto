@@ -4,6 +4,7 @@ import { CountDown } from "../components/CountDown";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 import { MainButton } from "../components/MainButton";
+import { PagesFooter } from "../components/PagesFooter";
 
 const styles = createUseStyles({
   homePage: {
@@ -26,7 +27,7 @@ const styles = createUseStyles({
   },
   mainTable: {
     width: "100%",
-    padding: 10,
+    padding: 20,
     fontSize: 22,
     "& tr": {
       "& td": {
@@ -51,20 +52,7 @@ const styles = createUseStyles({
   },
   btnWrapper: {
     margin: "20px auto",
-    padding: "0 10px",
-  },
-  footerLinks: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: 4,
-    margin: "20px auto",
-    padding: "0 10px",
-    textTransform: "capitalize",
-    opacity: 0.5,
-    // align right column to the right
-    "& div:nth-child(2n)": {
-      justifySelf: "end",
-    },
+    padding: "0 20px",
   },
 });
 
@@ -107,12 +95,9 @@ export const HomePage = () => {
         <MainButton title={t("app.connect-wallet")} />
       </div>
 
-      <div className={classes.footerLinks}>
-        <div>{t("game-rules")}</div>
-        <div>{t("smart-contract")}</div>
-        <div>{t("support")}</div>
-        <div>{t("faq")}</div>
-      </div>
+      <PagesFooter
+        shownLinks={["game-rules", "smart-contract", "support", "faq"]}
+      />
     </div>
   );
 };

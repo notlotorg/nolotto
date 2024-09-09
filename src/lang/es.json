@@ -35,5 +35,10 @@
   "global": "global",
   "daily": "daily",
   "friends": "friends",
-  "tasks": "tasks"
+  "tasks": "tasks",
+  "welcome-to": "Welcome to",
+  "new-years-lotto": "New Year's Lottery",
+  "close": "close",
+  "confirm": "confirm",
+  "cancel": "cancel"
 }

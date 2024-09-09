@@ -3,13 +3,20 @@ import React from "react";
 type MainButtonProps = {
   onClick?: () => void;
   title?: string;
+  secondary?: boolean;
+  sx?: React.CSSProperties;
 };
 
-export const MainButton: React.FC<MainButtonProps> = ({ onClick, title }) => {
+export const MainButton: React.FC<MainButtonProps> = ({
+  onClick,
+  title,
+  secondary,
+  sx,
+}) => {
   return (
     <div
       style={{
-        background: "var(--color-orange)",
+        background: `var(--color-${secondary ? "grey" : "orange"})`,
         width: "100%",
         fontWeight: 700,
         textAlign: "center",
@@ -17,6 +24,7 @@ export const MainButton: React.FC<MainButtonProps> = ({ onClick, title }) => {
         fontSize: 20,
         textTransform: "uppercase",
         padding: "10px 0",
+        ...sx,
       }}
       onClick={onClick}
     >
