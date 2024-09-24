@@ -8,7 +8,7 @@ import { PagesFooter } from "../components/PagesFooter";
 import TonConnect from "@tonconnect/sdk";
 
 const connector = new TonConnect({
-  manifestUrl: "https://ddtch.github.io/nolotto/tonconnect-manifest.json",
+  manifestUrl: "https://notlotorg.github.io/nolotto/tonconnect-manifest.json",
 });
 
 connector.restoreConnection();
