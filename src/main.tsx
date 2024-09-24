@@ -12,6 +12,7 @@ import esLang from "./lang/es.json";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import { BrowserRouter } from "react-router-dom";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -44,10 +45,12 @@ WebApp.ready();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    {/* <TonConnectUIProvider manifestUrl="https://ddtch.github.io/nolotto/tonconnect-manifest.json"> */}
-    <Suspense fallback={<div>Loading...</div>}>
-      <AppResolver />
-    </Suspense>
+    <BrowserRouter basename={import.meta.env.VITE_BASE_URL}>
+      {/* <TonConnectUIProvider manifestUrl="https://ddtch.github.io/nolotto/tonconnect-manifest.json"> */}
+      <Suspense fallback={<div>Loading...</div>}>
+        <AppResolver />
+      </Suspense>
+    </BrowserRouter>
     {/* </TonConnectUIProvider> */}
   </React.StrictMode>
 );
