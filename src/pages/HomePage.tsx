@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createUseStyles } from "react-jss";
 import { CountDown } from "../components/CountDown";
 import dayjs from "dayjs";
@@ -68,6 +68,12 @@ export const HomePage = () => {
   const { t } = useTranslation();
 
   const initiateConnect = () => {};
+
+  useEffect(() => {
+    connector.onStatusChange((status) => {
+      console.log("status", status);
+    });
+  }, []);
 
   return (
     <div className={classes.homePage}>
