@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { CountDown } from "../components/CountDown";
 import dayjs from "dayjs";
@@ -6,6 +6,9 @@ import { useTranslation } from "react-i18next";
 import { MainButton } from "../components/MainButton";
 import { PagesFooter } from "../components/PagesFooter";
 import TonConnect from "@tonconnect/sdk";
+import { BottomSheet } from "../components/BottomSheet";
+import { IWallet } from "../models/IWallet";
+import { WalletsList } from "../components/WalletsList";
 
 const connector = new TonConnect({
   manifestUrl: "https://notlotorg.github.io/nolotto/tonconnect-manifest.json",
@@ -67,13 +70,40 @@ export const HomePage = () => {
   const classes = styles();
   const { t } = useTranslation();
 
-  const initiateConnect = () => {};
+  const [connectRequested, setConnectRequested] = useState(false);
+  const [walletsList, setWalletsList] = useState<IWallet[]>([]);
+  const [walletListsIsLoading, setWalletListsIsLoading] = useState(false);
+
+  const initiateConnect = () => {
+    setConnectRequested(true);
+    getWalletsList();
+  };
 
   useEffect(() => {
-    connector.onStatusChange((status) => {
-      console.log("status", status);
-    });
+    connector.onStatusChange(
+      (wallet) => {
+        console.log("status ", wallet);
+      },
+      (err) => {
+        console.error("error occured", err);
+      }
+    );
   }, []);
+
+  const getWalletsList = async () => {
+    setWalletListsIsLoading(true);
+    connector
+      .getWallets()
+      .then((wallets) => {
+        setWalletsList(wallets as IWallet[]);
+      })
+      .catch((error) => {
+        console.error("error", error);
+      })
+      .finally(() => {
+        setWalletListsIsLoading(false);
+      });
+  };
 
   return (
     <div className={classes.homePage}>
@@ -114,6 +144,18 @@ export const HomePage = () => {
       <PagesFooter
         shownLinks={["game-rules", "smart-contract", "support", "faq"]}
       />
+
+      <BottomSheet open={connectRequested}>
+        <div>{t("select-wallet")}</div>
+        <WalletsList
+          wallets={walletsList}
+          onWalletClick={(wallet) => {
+            console.log("wallet", wallet);
+            connector.connect(wallet);
+          }}
+          listIsLoading={walletListsIsLoading}
+        />
+      </BottomSheet>
     </div>
   );
 };

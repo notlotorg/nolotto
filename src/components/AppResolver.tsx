@@ -14,9 +14,7 @@ export const AppResolver = () => {
   }, []);
 
   return (
-    <BrowserRouter
-    // basename="/notlot"
-    >
+    <BrowserRouter basename="/nolotto">
       {!isAuthenticated ? (
         <LoginScreen onAutheSuccess={() => setIsAuthenticated(true)} />
       ) : (

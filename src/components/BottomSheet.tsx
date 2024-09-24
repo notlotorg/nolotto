@@ -35,7 +35,7 @@ const styles = createUseStyles({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
-  bottomSheet: {
+  bottomSheetContainer: {
     position: "fixed",
     width: "100%",
     height: "90%",
@@ -43,8 +43,6 @@ const styles = createUseStyles({
     left: 0,
     right: 0,
     zIndex: 1000,
-    transform: "translateY(0)",
-    animation: "$slideIn 0.3s forwards",
     background: "#1f1e1c",
     boxShadow: "0px -6px 10px 4px rgba(0,0,0,.5)",
     borderTopLeftRadius: 12,
@@ -73,6 +71,12 @@ const styles = createUseStyles({
   },
   hideContent: {
     animation: "$slideOut 0.3s forwards",
+    animationDelay: "0s",
+  },
+  showContainer: {
+    transform: "translateY(100%)",
+    animation: "$slideIn .4s forwards",
+    animationDelay: "0.2s",
   },
   "@keyframes fadeIn": {
     "100%": {
@@ -91,7 +95,7 @@ const styles = createUseStyles({
   },
   "@keyframes slideIn": {
     "100%": {
-      transform: "translateY(0)",
+      transform: "translateY(0%)",
     },
   },
   "@keyframes slideOut": {
@@ -117,7 +121,8 @@ export const BottomSheet: React.FC<BottomSheetProps & PropsWithChildren> = ({
     [classes.hideBackdrop]: animateOut,
   });
 
-  const contentClasses = classNames(classes.bottomSheet, {
+  const contentClasses = classNames(classes.bottomSheetContainer, {
+    [classes.showContainer]: !animateOut,
     [classes.hideContent]: animateOut,
   });
 
@@ -126,6 +131,9 @@ export const BottomSheet: React.FC<BottomSheetProps & PropsWithChildren> = ({
       setAnimateOut(false);
       onOpened?.();
     }
+    return () => {
+      setAnimateOut(false);
+    };
   }, [open]);
 
   useEffect(() => {
@@ -143,7 +151,6 @@ export const BottomSheet: React.FC<BottomSheetProps & PropsWithChildren> = ({
           <div
             className={backdropClasses}
             onClick={() => {
-              console.log("backdrop click");
               setAnimateOut(true);
             }}
           />
