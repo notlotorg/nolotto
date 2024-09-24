@@ -38,12 +38,16 @@ jobs:
           node-version: 18
           cache: "npm"
           cache-dependency-path: "./"
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        #run: npm install --legacy-peer-deps
+        run: bun install --frozen-lockfile
 
       - name: Build
-        run: npm run deploy
+        run: npm run build
         env:
           VITE_BASE_URL: /${{ github.event.repository.name }}
 
