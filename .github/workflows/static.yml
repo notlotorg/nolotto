@@ -1,5 +1,5 @@
 # # Improved workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Deploy Vite app to GitHub Pages
 
 on:
   push:
@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build-and-deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -25,31 +25,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v3
-        with:
-          # This will create the pages site if it doesn't exist
-          static_site_generator: none
-
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: "npm"
-          cache-dependency-path: "./"
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm ci
 
       - name: Build
         run: npm run build
+        env:
+          BASE_URL: /${{ github.event.repository.name }}
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v2
         with:
           path: ./dist
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v2

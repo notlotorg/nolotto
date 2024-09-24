@@ -18,5 +18,5 @@ export default defineConfig({
     outDir: "./dist",
   },
 
-  // base: "/notlot",
+  base: process.env.BASE_URL || "/",
 });
