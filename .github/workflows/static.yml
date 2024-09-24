@@ -43,7 +43,7 @@ jobs:
         run: npm install --legacy-peer-deps
 
       - name: Build
-        run: npm run build
+        run: npm run deploy
         env:
           VITE_BASE_URL: /${{ github.event.repository.name }}
 
