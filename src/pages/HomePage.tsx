@@ -5,6 +5,13 @@ import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 import { MainButton } from "../components/MainButton";
 import { PagesFooter } from "../components/PagesFooter";
+import TonConnect from "@tonconnect/sdk";
+
+const connector = new TonConnect({
+  manifestUrl: "https://ddtch.github.io/nolotto/tonconnect-manifest.json",
+});
+
+connector.restoreConnection();
 
 const styles = createUseStyles({
   homePage: {
@@ -59,6 +66,9 @@ const styles = createUseStyles({
 export const HomePage = () => {
   const classes = styles();
   const { t } = useTranslation();
+
+  const initiateConnect = () => {};
+
   return (
     <div className={classes.homePage}>
       <h1>{t("win")}</h1>
@@ -92,7 +102,7 @@ export const HomePage = () => {
       </table>
 
       <div className={classes.btnWrapper}>
-        <MainButton title={t("app.connect-wallet")} />
+        <MainButton title={t("app.connect-wallet")} onClick={initiateConnect} />
       </div>
 
       <PagesFooter

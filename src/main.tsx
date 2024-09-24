@@ -44,10 +44,10 @@ WebApp.ready();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <TonConnectUIProvider manifestUrl="https://ddtch.github.io/nolotto/tonconnect-manifest.json">
-      <Suspense fallback={<div>Loading...</div>}>
-        <AppResolver />
-      </Suspense>
-    </TonConnectUIProvider>
+    {/* <TonConnectUIProvider manifestUrl="https://ddtch.github.io/nolotto/tonconnect-manifest.json"> */}
+    <Suspense fallback={<div>Loading...</div>}>
+      <AppResolver />
+    </Suspense>
+    {/* </TonConnectUIProvider> */}
   </React.StrictMode>
 );
