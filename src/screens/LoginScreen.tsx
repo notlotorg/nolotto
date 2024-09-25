@@ -1,5 +1,4 @@
 import React from "react";
-import { TonConnectButton } from "@tonconnect/ui-react";
 import { useTranslation } from "react-i18next";
 import { createUseStyles } from "react-jss";
 
@@ -20,12 +19,6 @@ export const LoginScreen = ({ onAutheSuccess }: any) => {
     <div className={classes.mainContainer}>
       {t("app.title")}
       <button onClick={() => onAutheSuccess()}>Click me!</button>
-      <TonConnectButton
-        style={{
-          position: "relative",
-          right: 0,
-        }}
-      />
     </div>
   );
 };

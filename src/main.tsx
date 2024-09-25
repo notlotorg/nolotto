@@ -4,40 +4,27 @@ import WebApp from "telegram-mini-app";
 import "./index.scss";
 import { AppResolver } from "./components/AppResolver";
 import i18n from "i18next";
-import { useTranslation, initReactI18next } from "react-i18next";
-import enLang from "./lang/en.json";
-import ruLang from "./lang/ru.json";
-import esLang from "./lang/es.json";
+import { initReactI18next } from "react-i18next";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { BrowserRouter } from "react-router-dom";
 import { TonConnectUI } from "@tonconnect/ui";
+import LazyImportPlugin from "./LazyImportPlugin";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const defLang = navigator.language || navigator.languages[0] || "en";
-const langToUse = defLang.length > 2 ? defLang.slice(0, 2) : defLang;
-
-i18n.use(initReactI18next).init({
-  resources: {
-    en: {
-      translation: enLang,
+i18n
+  .use(LazyImportPlugin)
+  .use(initReactI18next)
+  .init({
+    fallbackLng: "en",
+    supportedLngs: ["en", "ru", "es"],
+    interpolation: {
+      escapeValue: false,
     },
-    ru: {
-      translation: ruLang,
-    },
-    es: {
-      translation: esLang,
-    },
-  },
-  lng: langToUse,
-  fallbackLng: "en",
-  interpolation: {
-    escapeValue: false,
-  },
-});
+  });
 
 WebApp.isVerticalSwipesEnabled = false;
 WebApp.isClosingConfirmationEnabled = true;

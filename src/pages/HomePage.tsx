@@ -5,9 +5,7 @@ import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 import { MainButton } from "../components/MainButton";
 import { PagesFooter } from "../components/PagesFooter";
-import { tonService } from "../services/ton.service";
 import TonWeb from "tonweb";
-import { TonConnectUI } from "@tonconnect/ui";
 import { connectorUI } from "../main";
 import { Spinner } from "../components/Spinner";
 
@@ -87,9 +85,9 @@ export const HomePage = () => {
       (wallet) => {
         if (wallet) {
           setWalletIsConnected(wallet.account.address.length > 0);
-          tonweb.getBalance(wallet.account.address).then((balance) => {
-            console.log("balance", balance);
-          });
+          // tonweb.getBalance(wallet.account.address).then((balance) => {
+          //   console.log("balance", balance);
+          // });
           setWalletAddress(wallet.account.address);
         }
       },

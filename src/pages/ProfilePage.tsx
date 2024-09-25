@@ -102,7 +102,10 @@ export const ProfilePage = () => {
           textTransform: "capitalize",
         }}
       />
-      <select defaultValue={activeLang}>
+      <select
+        defaultValue={activeLang}
+        onChange={(e) => handleLangChange(e.target.value as string)}
+      >
         {langs.map((lang) => (
           <option key={lang.id} value={lang.id}>
             {lang.title}
