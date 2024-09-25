@@ -12,9 +12,12 @@
   "dependencies": {
     "@react-three/drei": "^9.105.6",
     "@react-three/fiber": "^8.16.6",
-    "@tonconnect/sdk": "^3.0.5",
-    "@tonconnect/ui-react": "^2.0.6",
+    "@ton/core": "^0.58.1",
+    "@ton/crypto": "^3.3.0",
+    "@ton/ton": "^15.0.0",
+    "@tonconnect/ui": "^2.0.9",
     "@vitejs/plugin-basic-ssl": "^1.1.0",
+    "buffer": "^6.0.3",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.12",
     "i18next": "^23.12.3",
@@ -26,6 +29,7 @@
     "react-router-dom": "^6.23.1",
     "telegram-mini-app": "^1.1.0",
     "three": "^0.164.1",
+    "tonweb": "^0.0.66",
     "vite-plugin-svgr": "^4.2.0"
   },
   "devDependencies": {
@@ -43,7 +47,8 @@
     "sass": "^1.77.8",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
-    "vite-plugin-eslint": "^1.8.1"
+    "vite-plugin-eslint": "^1.8.1",
+    "vite-plugin-node-polyfills": "^0.22.0"
   },
   "homepage": "."
 }

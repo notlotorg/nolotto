@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { createUseStyles } from "react-jss";
+import { Typography } from "../components/Typography";
+import { Divider } from "../components/Divider";
+import { MainButton } from "../components/MainButton";
+import { connectorUI } from "../main";
+import { Spinner } from "../components/Spinner";
+import WebApp from "telegram-mini-app";
 
 const langs = [
   {
@@ -18,6 +24,9 @@ const langs = [
 ];
 
 const styles = createUseStyles({
+  wrapper: {
+    padding: 10,
+  },
   list: {
     listStyle: "none",
     padding: 0,
@@ -31,18 +40,105 @@ const styles = createUseStyles({
 export const ProfilePage = () => {
   const classes = styles();
 
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [activeLang, setActiveLang] = React.useState("en");
+
+  const [isConneccted, setIsConnected] = React.useState<boolean | undefined>(
+    undefined
+  );
 
   const handleLangChange = (langId: string) => {
     i18n.changeLanguage(langId);
     setActiveLang(langId);
   };
 
+  const getWalletFunds = async () => {};
+
+  const handleDisconnect = async () => {
+    WebApp.showConfirm("Are you sure you want to disconnect?", (confirmed) => {
+      if (confirmed) {
+        connectorUI.disconnect();
+      }
+    });
+  };
+
+  const handleConnect = async () => {
+    connectorUI.openModal();
+  };
+
+  useEffect(() => {
+    if (!connectorUI) return;
+    //@ts-ignore
+    setIsConnected(connectorUI.walletInfo !== null);
+    connectorUI.onStatusChange(
+      (wallet) => {
+        setIsConnected(wallet !== null && wallet.account.address.length > 0);
+        WebApp.showAlert("Congrats! You are connected!");
+      },
+      (err) => {
+        console.error("error occured", err);
+        setIsConnected(false);
+      }
+    );
+  }, [connectorUI]);
+
   return (
-    <div>
-      <ul className={classes.list}>
+    <div className={classes.wrapper}>
+      <Typography
+        variant={"subtitle1"}
+        text={t("my") + " " + t("balance")}
+        sx={{
+          textTransform: "capitalize",
+        }}
+      />
+
+      <Divider />
+
+      <Typography
+        variant={"subtitle1"}
+        text={t("select-lang")}
+        sx={{
+          textTransform: "capitalize",
+        }}
+      />
+      <select defaultValue={activeLang}>
+        {langs.map((lang) => (
+          <option key={lang.id} value={lang.id}>
+            {lang.title}
+          </option>
+        ))}
+      </select>
+      <Divider />
+
+      {isConneccted === undefined ? (
+        <Spinner />
+      ) : isConneccted ? (
+        <MainButton
+          sx={{
+            width: "max-content",
+            padding: 4,
+            fontSize: 14,
+            fontWeight: 400,
+            borderRadius: 4,
+          }}
+          title={t("disconnect-wallet")}
+          onClick={handleDisconnect}
+        />
+      ) : (
+        <MainButton
+          sx={{
+            width: "max-content",
+            padding: 4,
+            fontSize: 14,
+            fontWeight: 400,
+            borderRadius: 4,
+          }}
+          title={t("connect-wallet")}
+          onClick={handleConnect}
+        />
+      )}
+      {/* <ul className={classes.list}>
         {langs.map((lang) => (
           <li
             key={lang.id}
@@ -55,7 +151,7 @@ export const ProfilePage = () => {
             {lang.title}
           </li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 };

@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { CountDown } from "../components/CountDown";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 import { MainButton } from "../components/MainButton";
 import { PagesFooter } from "../components/PagesFooter";
-import TonConnect from "@tonconnect/sdk";
-import { BottomSheet } from "../components/BottomSheet";
-import { IWallet } from "../models/IWallet";
-import { WalletsList } from "../components/WalletsList";
+import { tonService } from "../services/ton.service";
+import TonWeb from "tonweb";
+import { TonConnectUI } from "@tonconnect/ui";
+import { connectorUI } from "../main";
+import { Spinner } from "../components/Spinner";
 
-const connector = new TonConnect({
-  manifestUrl: "https://notlotorg.github.io/nolotto/tonconnect-manifest.json",
-});
-
-connector.restoreConnection();
+const tonweb = new TonWeb();
 
 const styles = createUseStyles({
   homePage: {
@@ -70,40 +67,39 @@ export const HomePage = () => {
   const classes = styles();
   const { t } = useTranslation();
 
-  const [connectRequested, setConnectRequested] = useState(false);
-  const [walletsList, setWalletsList] = useState<IWallet[]>([]);
-  const [walletListsIsLoading, setWalletListsIsLoading] = useState(false);
+  const [walletIsConnected, setWalletIsConnected] = useState<
+    undefined | boolean
+  >(undefined);
+  const [walletAddress, setWalletAddress] = useState<string>("");
 
-  const initiateConnect = () => {
-    setConnectRequested(true);
-    getWalletsList();
+  const initiateConnect = async () => {
+    await connectorUI.openModal();
   };
 
   useEffect(() => {
-    connector.onStatusChange(
+    if (!connectorUI) return;
+    connectorUI.connector.restoreConnection();
+
+    //@ts-ignore
+    setWalletIsConnected(connectorUI.walletInfo !== null);
+
+    connectorUI.connector.onStatusChange(
       (wallet) => {
-        console.log("status ", wallet);
+        if (wallet) {
+          setWalletIsConnected(wallet.account.address.length > 0);
+          tonweb.getBalance(wallet.account.address).then((balance) => {
+            console.log("balance", balance);
+          });
+          setWalletAddress(wallet.account.address);
+        }
       },
       (err) => {
         console.error("error occured", err);
+        setWalletIsConnected(false);
       }
     );
-  }, []);
-
-  const getWalletsList = async () => {
-    setWalletListsIsLoading(true);
-    connector
-      .getWallets()
-      .then((wallets) => {
-        setWalletsList(wallets as IWallet[]);
-      })
-      .catch((error) => {
-        console.error("error", error);
-      })
-      .finally(() => {
-        setWalletListsIsLoading(false);
-      });
-  };
+    return () => {};
+  }, [connectorUI]);
 
   return (
     <div className={classes.homePage}>
@@ -138,24 +134,23 @@ export const HomePage = () => {
       </table>
 
       <div className={classes.btnWrapper}>
-        <MainButton title={t("app.connect-wallet")} onClick={initiateConnect} />
+        {walletIsConnected === undefined ? (
+          <Spinner />
+        ) : !walletAddress ? (
+          <MainButton
+            title={t("app.connect-wallet")}
+            onClick={initiateConnect}
+          />
+        ) : (
+          <MainButton
+            title={walletAddress.slice(0, 6) + "..." + walletAddress.slice(-4)}
+          />
+        )}
       </div>
 
       <PagesFooter
         shownLinks={["game-rules", "smart-contract", "support", "faq"]}
       />
-
-      <BottomSheet open={connectRequested}>
-        <div>{t("select-wallet")}</div>
-        <WalletsList
-          wallets={walletsList}
-          onWalletClick={(wallet) => {
-            console.log("wallet", wallet);
-            connector.connect(wallet);
-          }}
-          listIsLoading={walletListsIsLoading}
-        />
-      </BottomSheet>
     </div>
   );
 };

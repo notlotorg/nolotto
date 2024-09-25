@@ -16,6 +16,7 @@
     "minute": "minute",
     "second": "second"
   },
+  "my": "my",
   "win": "win",
   "balance": "balance",
   "status": "status",
@@ -41,5 +42,7 @@
   "close": "close",
   "confirm": "confirm",
   "cancel": "cancel",
-  "select-wallet": "Select Wallet"
+  "select-wallet": "Select Wallet",
+  "select-lang": "Select Language",
+  "disconnect-wallet": "Disconnect Wallet"
 }
