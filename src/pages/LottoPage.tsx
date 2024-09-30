@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { MainButton } from "../components/MainButton";
 import { useTranslation } from "react-i18next";
 import { PagesFooter } from "../components/PagesFooter";
 import { BottomSheet } from "../components/BottomSheet";
 import { FormField } from "../components/FormField";
-import { Typography } from "../components/Typography";
-
+import WebApp from "telegram-mini-app";
+import { connectorUI } from "../main";
+import { CHAIN, SendTransactionRequest } from "@tonconnect/ui";
+import { tonService } from "../services/ton.service";
+import { Cell } from "@ton/core";
+const MOCK_BOC =
+  "te6cckEBBAEAtwAB5YgBjMX+8hju03Zm8LshWb3h1acCNfSaeNSbeVfLHBdhQjADm0s7c////+s30VjgAAAAFc6IYYUanEtxSDGH9snK1LtuugVC8DFbw9incBU7rZTKQXRBXJqofaWHYBeofRMOn11mVkst8z79hwZT4Uc8PBcBAgoOw8htAwMCAGhCAHbCh725JT21X5zkt4J1kQgPLl+/uPBJK1sIgV87gzgpoHc1lAAAAAAAAAAAAAAAAAAAAABg1X8t";
 const styles = createUseStyles({
   pageHolder: {
     padding: "0 20px",
@@ -50,17 +55,109 @@ export const LottoPage = () => {
   const classes = styles();
   const { t } = useTranslation();
 
+  const webClient = tonService.getTonWebClient();
+
   const [purchaseInProgress, setPurchaseInProgress] = useState(false);
   const [price, setPrice] = useState(fixedPrice);
+  const [resp, setResp] = useState("");
+  const [err, setErr] = useState("");
+
+  // const _prepareMessage = async (): Promise<string> => {
+  //   let cell = new webClient.boc.Cell();
+  //   cell.bits.writeUint(0, 32);
+  //   cell.bits.writeString("Buy tickets, win LOT with NOTLOT!");
+  //   return webClient.utils.bytesToBase64(await cell.toBoc());
+  // };
+
+  // const _parseBoC = async (boc: string) => {
+  //   const payload = await _prepareMessage();
+  //   console.log("payload", payload);
+  //   const cell = await webClient.boc.Cell.oneFromBoc(payload).hash();
+  //   console.log("cell", cell);
+  // };
+
+  const sendTransaction = async () => {
+    if (!connectorUI.connected) {
+      alert("Please connect wallet to send the transaction!");
+    }
+
+    const getNetwork =
+      import.meta.env.VITE_ENV === "development"
+        ? CHAIN.TESTNET
+        : CHAIN.MAINNET;
+
+    const getWalletAddress =
+      import.meta.env.VITE_ENV === "development"
+        ? "0QDthQ97ckp7ar85yW8E6yIQHly_f3Hgkla2EQK-dwZwU3_f" // testnet address
+        : "UQAgQ9MZdO_cFde80Mlna-i3Gh_IjVvvN3p8vuyliUk49MmG"; // lucky real address
+
+    const transaction: SendTransactionRequest = {
+      validUntil: Math.floor(Date.now() / 1000) + 300, // 5 min
+      network: getNetwork,
+      messages: [
+        {
+          address: getWalletAddress,
+          amount: webClient.utils.toNano(price.toString()).toString(),
+          // payload: await prepareMessage(),
+        },
+      ],
+    };
+
+    // setResp(JSON.stringify(transaction, null, 2));
+
+    try {
+      const result = await connectorUI.sendTransaction(transaction, {
+        skipRedirectToWallet: "never",
+        modals: "all",
+      });
+
+      const someTxData = "";
+      // const deC1 = await webClient.boc.Cell.oneFromBoc(result.boc).hash();
+      // console.log("deC1", deC1);
+
+      // setResp(JSON.stringify(result, null, 2));
+    } catch (e: any) {
+      // setErr(JSON.stringify(e, null, 2));
+      // if (e instanceof UserRejectedError) {
+      //   alert(
+      //     "You rejected the transaction. Please confirm it to send to the blockchain"
+      //   );
+      // } else {
+      //   alert("Unknown error happened", e);
+      // }
+    }
+  };
 
   const handleBuyTickets = () => {
+    if (Number(price) === 0) {
+      return WebApp.showAlert("Please enter the number of tickets");
+    }
     setPurchaseInProgress(true);
   };
 
   const handlePurchaseClosed = () => {
-    // alert("purchesed");
     setPurchaseInProgress(false);
   };
+
+  const showBocHash = async () => {
+    const cell = new webClient.boc.Cell().toBoc();
+    const coreCell = Cell.fromBase64(MOCK_BOC);
+    console.log("cell core", coreCell.hash());
+
+    // cell.hash().then((hash) => {
+    //   console.log("hash", hash);
+    // });
+    // cell.toBoc().then(async (boc) => {
+    //   console.log("boc", boc);
+    //   const parsed = await webClient.boc.Cell.fromBoc(MOCK_BOC);
+    //   console.log("parsed", parsed);
+    // });
+    // console.log("cell", cell, MOCK_BOC);
+  };
+
+  // useEffect(() => {
+  //   showBocHash();
+  // }, []);
 
   return (
     <div className={classes.pageHolder}>
@@ -93,10 +190,11 @@ export const LottoPage = () => {
         <FormField
           label="Number of tickets"
           type="tel"
+          bold
           defaultValue="1"
+          textAlign="center"
           onChange={(vl) => {
             const newPrice = parseFloat(vl) * fixedPrice;
-
             setPrice(isNaN(newPrice) ? 0 : newPrice);
           }}
         />
@@ -107,6 +205,23 @@ export const LottoPage = () => {
           disabled
           textAlign="center"
           bold
+        />
+        <div
+          style={{
+            height: 300,
+            overflowY: "auto",
+          }}
+        >
+          <pre>{resp}</pre>
+          <br />
+          <pre>{err}</pre>
+        </div>
+        <MainButton
+          title={t("buy-ticket")}
+          sx={{
+            marginTop: 20,
+          }}
+          onClick={sendTransaction}
         />
       </BottomSheet>
     </div>

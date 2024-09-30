@@ -5,6 +5,7 @@ type MainButtonProps = {
   title?: string;
   secondary?: boolean;
   sx?: React.CSSProperties;
+  disabled?: boolean;
 };
 
 export const MainButton: React.FC<MainButtonProps> = ({
@@ -12,6 +13,7 @@ export const MainButton: React.FC<MainButtonProps> = ({
   title,
   secondary,
   sx,
+  disabled,
 }) => {
   return (
     <div

@@ -7,6 +7,7 @@ import { MainButton } from "../components/MainButton";
 import { connectorUI } from "../main";
 import { Spinner } from "../components/Spinner";
 import WebApp from "telegram-mini-app";
+import { is } from "@react-three/fiber/dist/declarations/src/core/utils";
 
 const langs = [
   {
@@ -56,11 +57,18 @@ export const ProfilePage = () => {
   const getWalletFunds = async () => {};
 
   const handleDisconnect = async () => {
-    WebApp.showConfirm("Are you sure you want to disconnect?", (confirmed) => {
-      if (confirmed) {
-        connectorUI.disconnect();
-      }
-    });
+    try {
+      WebApp.showConfirm(
+        "Are you sure you want to disconnect?",
+        (confirmed) => {
+          if (confirmed) {
+            connectorUI.disconnect();
+          }
+        }
+      );
+    } catch (error) {
+      connectorUI.disconnect();
+    }
   };
 
   const handleConnect = async () => {
@@ -73,15 +81,23 @@ export const ProfilePage = () => {
     setIsConnected(connectorUI.walletInfo !== null);
     connectorUI.onStatusChange(
       (wallet) => {
-        setIsConnected(wallet !== null && wallet.account.address.length > 0);
-        WebApp.showAlert("Congrats! You are connected!");
+        const isConneccted =
+          wallet !== null && wallet.account.address.length > 0;
+        setIsConnected(isConneccted);
+        if (isConneccted) {
+          try {
+            WebApp.showAlert("Congrats! You are connected!");
+          } catch (error) {
+            alert("Congrats! You are connected!");
+          }
+        }
       },
       (err) => {
         console.error("error occured", err);
         setIsConnected(false);
       }
     );
-  }, [connectorUI]);
+  }, []);
 
   return (
     <div className={classes.wrapper}>

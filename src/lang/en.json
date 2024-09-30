@@ -44,5 +44,6 @@
   "cancel": "cancel",
   "select-wallet": "Select Wallet",
   "select-lang": "Select Language",
-  "disconnect-wallet": "Disconnect Wallet"
+  "disconnect-wallet": "Disconnect Wallet",
+  "buy-ticket": "Buy Ticket"
 }

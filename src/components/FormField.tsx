@@ -25,9 +25,13 @@ const styles = createUseStyles({
   },
   input: {
     width: "100%",
-    padding: "10px",
+    padding: 10,
     borderRadius: 10,
-    fontSize: 16,
+    fontSize: 18,
+    "&:placeholder": {
+      fontSize: 18,
+    },
+    margin: 0,
   },
   hint: {
     color: "var(--color-grey)",
