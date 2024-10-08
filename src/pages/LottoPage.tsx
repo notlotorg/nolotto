@@ -10,6 +10,7 @@ import { connectorUI } from "../main";
 import { CHAIN, SendTransactionRequest } from "@tonconnect/ui";
 import { tonService } from "../services/ton.service";
 import { Cell } from "@ton/core";
+import { Typography } from "../components/Typography";
 const MOCK_BOC =
   "te6cckEBBAEAtwAB5YgBjMX+8hju03Zm8LshWb3h1acCNfSaeNSbeVfLHBdhQjADm0s7c////+s30VjgAAAAFc6IYYUanEtxSDGH9snK1LtuugVC8DFbw9incBU7rZTKQXRBXJqofaWHYBeofRMOn11mVkst8z79hwZT4Uc8PBcBAgoOw8htAwMCAGhCAHbCh725JT21X5zkt4J1kQgPLl+/uPBJK1sIgV87gzgpoHc1lAAAAAAAAAAAAAAAAAAAAABg1X8t";
 const styles = createUseStyles({
@@ -58,9 +59,12 @@ export const LottoPage = () => {
   const webClient = tonService.getTonWebClient();
 
   const [purchaseInProgress, setPurchaseInProgress] = useState(false);
+  const [showTickets, setShowTickets] = useState(false);
   const [price, setPrice] = useState(fixedPrice);
   const [resp, setResp] = useState("");
   const [err, setErr] = useState("");
+  const [purchaseSuccess, setPurchaseSuccess] = useState(false);
+  const [ticketsCount, setTicketsCount] = useState(1);
 
   // const _prepareMessage = async (): Promise<string> => {
   //   let cell = new webClient.boc.Cell();
@@ -108,16 +112,18 @@ export const LottoPage = () => {
     try {
       const result = await connectorUI.sendTransaction(transaction, {
         skipRedirectToWallet: "never",
-        modals: "all",
+        modals: ["before", "error"],
+        notifications: "all",
       });
 
-      const someTxData = "";
-      // const deC1 = await webClient.boc.Cell.oneFromBoc(result.boc).hash();
-      // console.log("deC1", deC1);
+      if (result.boc.length > 0) {
+        setPurchaseInProgress(false);
+        setPurchaseSuccess(true);
+      }
 
-      // setResp(JSON.stringify(result, null, 2));
+      setResp(JSON.stringify(result, null, 2));
     } catch (e: any) {
-      // setErr(JSON.stringify(e, null, 2));
+      setErr(JSON.stringify(e, null, 2));
       // if (e instanceof UserRejectedError) {
       //   alert(
       //     "You rejected the transaction. Please confirm it to send to the blockchain"
@@ -129,6 +135,7 @@ export const LottoPage = () => {
   };
 
   const handleBuyTickets = () => {
+    setPurchaseSuccess(false);
     if (Number(price) === 0) {
       return WebApp.showAlert("Please enter the number of tickets");
     }
@@ -137,6 +144,12 @@ export const LottoPage = () => {
 
   const handlePurchaseClosed = () => {
     setPurchaseInProgress(false);
+  };
+
+  const openTicketsList = () => {
+    setPurchaseInProgress(false);
+    setPurchaseSuccess(false);
+    setShowTickets(true);
   };
 
   const showBocHash = async () => {
@@ -155,26 +168,51 @@ export const LottoPage = () => {
     // console.log("cell", cell, MOCK_BOC);
   };
 
-  // useEffect(() => {
-  //   showBocHash();
-  // }, []);
-
   return (
     <div className={classes.pageHolder}>
-      <div className={classes.banner}>1</div>
+      {!purchaseSuccess ? (
+        <>
+          <div className={classes.banner}>1</div>
 
-      <div className={classes.title}>{t("welcome-to")}</div>
-      <div className={classes.subTitle}>{t("new-years-lotto")}</div>
+          <div className={classes.title}>{t("titles.welcome-to")}</div>
+          <div className={classes.subTitle}>{t("titles.new-years-lotto")}</div>
+        </>
+      ) : (
+        <>
+          <div
+            className={classes.subTitle}
+            style={{
+              fontSize: 22,
+            }}
+          >
+            {t("app.purchase-success")}
+          </div>
+          <div className={classes.banner}>1</div>
+          <div
+            className={classes.title}
+            style={{
+              fontWeight: "medium",
+              fontSize: 18,
+            }}
+          >
+            You purchased {ticketsCount} {t("ticket")}
+          </div>
+        </>
+      )}
 
       <div>
         <MainButton
-          title={t("buy-tickets")}
+          title={t("app.buy-tickets")}
           sx={{
             marginBottom: 20,
           }}
           onClick={handleBuyTickets}
         />
-        <MainButton secondary title={t("my-tickets")} />
+        <MainButton
+          secondary
+          title={t("app.my-tickets")}
+          onClick={openTicketsList}
+        />
       </div>
 
       <div className={classes.pageFooter}>
@@ -187,24 +225,43 @@ export const LottoPage = () => {
       </div>
 
       <BottomSheet open={purchaseInProgress} onClosed={handlePurchaseClosed}>
-        <FormField
-          label="Number of tickets"
-          type="tel"
-          bold
-          defaultValue="1"
-          textAlign="center"
-          onChange={(vl) => {
-            const newPrice = parseFloat(vl) * fixedPrice;
-            setPrice(isNaN(newPrice) ? 0 : newPrice);
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
           }}
-        />
-        <FormField
-          label="Total price"
-          type="text"
-          value={price.toString() + " TON"}
-          disabled
-          textAlign="center"
-          bold
+        >
+          <FormField
+            label="Number of tickets"
+            type="tel"
+            bold
+            defaultValue="1"
+            textAlign="center"
+            onChange={(vl) => {
+              const newPrice = parseFloat(vl) * fixedPrice;
+              setPrice(isNaN(newPrice) ? 0 : newPrice);
+              setTicketsCount(parseInt(vl));
+            }}
+            sx={{
+              fontSize: 18,
+            }}
+          />
+          <FormField
+            label="Total price"
+            type="text"
+            value={price.toString() + " TON"}
+            disabled
+            textAlign="center"
+            bold
+          />
+        </div>
+        <MainButton
+          title={t("app.buy-ticket")}
+          sx={{
+            marginTop: 20,
+          }}
+          onClick={sendTransaction}
         />
         <div
           style={{
@@ -216,13 +273,10 @@ export const LottoPage = () => {
           <br />
           <pre>{err}</pre>
         </div>
-        <MainButton
-          title={t("buy-ticket")}
-          sx={{
-            marginTop: 20,
-          }}
-          onClick={sendTransaction}
-        />
+      </BottomSheet>
+
+      <BottomSheet open={showTickets} onClosed={() => setShowTickets(false)}>
+        tickets list
       </BottomSheet>
     </div>
   );

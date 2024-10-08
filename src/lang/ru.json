@@ -1,7 +1,15 @@
 {
   "app": {
     "title": "Привет мир",
-    "connect-wallet": "Подключить кошелек"
+    "connect-wallet": "Подключить кошелек",
+    "select-wallet": "Выбрать кошелек",
+    "select-lang": "Выбрать язык",
+    "disconnect-wallet": "Отключить кошелек",
+    "buy-ticket": "Купить билет",
+    "buy-tickets": "Купить билеты",
+    "my-tickets": "Мои билеты",
+    "my-ticket": "Мой билет",
+    "purchase-success": "Покупка успешна"
   },
   "bottomNav": {
     "home": "Главная",
@@ -15,6 +23,10 @@
     "hour": "час",
     "minute": "минута",
     "second": "секунда"
+  },
+  "titels": {
+    "new-years-lotto": "Новогоднее лото",
+    "welcome-to": "Добро пожаловать в"
   },
   "win": "выиграть",
   "balance": "баланс",
@@ -36,8 +48,6 @@
   "daily": "ежедневный",
   "friends": "друзья",
   "tasks": "задания",
-  "welcome-to": "Добро пожаловать в",
-  "new-years-lotto": "Новогоднюю лотерею",
   "close": "закрыть",
   "confirm": "подтвердить",
   "cancel": "отмена"

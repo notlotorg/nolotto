@@ -1,7 +1,15 @@
 {
   "app": {
     "title": "Hello World",
-    "connect-wallet": "Connect Wallet"
+    "connect-wallet": "Connect Wallet",
+    "disconnect-wallet": "Disconnect Wallet",
+    "select-wallet": "Select Wallet",
+    "select-lang": "Select Language",
+    "buy-ticket": "Buy Ticket",
+    "buy-tickets": "Buy Tickets",
+    "my-tickets": "My Tickets",
+    "my-ticket": "My Ticket",
+    "purchase-success": "Purchase successful"
   },
   "bottomNav": {
     "home": "Home",
@@ -15,6 +23,10 @@
     "hour": "hour",
     "minute": "minute",
     "second": "second"
+  },
+  "titles": {
+    "new-years-lotto": "New Year's Lottery",
+    "welcome-to": "Welcome to"
   },
   "my": "my",
   "win": "win",
@@ -37,13 +49,7 @@
   "daily": "daily",
   "friends": "friends",
   "tasks": "tasks",
-  "welcome-to": "Welcome to",
-  "new-years-lotto": "New Year's Lottery",
   "close": "close",
   "confirm": "confirm",
-  "cancel": "cancel",
-  "select-wallet": "Select Wallet",
-  "select-lang": "Select Language",
-  "disconnect-wallet": "Disconnect Wallet",
-  "buy-ticket": "Buy Ticket"
+  "cancel": "cancel"
 }

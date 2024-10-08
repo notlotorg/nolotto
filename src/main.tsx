@@ -8,7 +8,7 @@ import { initReactI18next } from "react-i18next";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { TonConnectUI } from "@tonconnect/ui";
 import LazyImportPlugin from "./LazyImportPlugin";
 
@@ -36,10 +36,10 @@ export const connectorUI = new TonConnectUI({
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <BrowserRouter basename={import.meta.env.VITE_BASE_URL}>
+    <HashRouter basename={import.meta.env.VITE_BASE_URL}>
       <Suspense fallback={<div>Loading...</div>}>
         <AppResolver />
       </Suspense>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>
 );
